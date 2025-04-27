@@ -9,8 +9,9 @@ function AddTransaction() {
     date: "",
   });
 
-  const handleAdd = async () => {
-    if (formData.date == "") {
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    if (formData.date === "") {
       await axios.post(SERVER_URL + `/add`, {
         amount: formData.amount,
         description: formData.description,
@@ -26,7 +27,6 @@ function AddTransaction() {
   };
 
   const handleChange = (e) => {
-    e.preventDefault();
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -37,7 +37,10 @@ function AddTransaction() {
   return (
     <div className="flex flex-col items-center justify-center p-10 gap-[4rem]">
       <h1 className="text-4xl font-bold text-red-500">Add New Transaction</h1>
-      <form className="flex flex-col gap-[3rem] border-2 border-yellow-500 p-10 w-1/2 bg-amber-200 rounded-xl">
+      <form
+        onSubmit={handleAdd}
+        className="flex flex-col gap-[3rem] border-2 border-yellow-500 p-10 w-1/2 bg-amber-200 rounded-xl"
+      >
         <div className="flex w-full items-center justify-between p-1">
           <label
             htmlFor="Amount"
@@ -82,7 +85,7 @@ function AddTransaction() {
           />
         </div>
         <div className="bg-purple-500 w-[6rem] text-center font-bold text-white p-2 self-center text-xl rounded-xl hover:bg-purple-600">
-          <button className="cursor-pointer" onClick={() => handleAdd()}>
+          <button className="cursor-pointer" type="submit">
             Add
           </button>
         </div>
