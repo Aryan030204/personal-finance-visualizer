@@ -64,9 +64,10 @@ function Home() {
     getTransactions();
   }, []);
 
-  const filteredTransactions = category === "All"
-    ? transactions
-    : transactions.filter((transaction) => transaction.category === category);
+  const filteredTransactions =
+    category === "All"
+      ? transactions
+      : transactions.filter((transaction) => transaction.category === category);
 
   return (
     <div className="flex flex-col items-center justify-center p-10">
@@ -75,21 +76,23 @@ function Home() {
       </h1>
 
       {/* Category Select */}
-      <div className="flex w-fit items-center justify-between p-3 gap-5 bg-gray-300 rounded-xl my-5">
-        <label htmlFor="Category">Category</label>
-        <select
-          name="categories"
-          className="border p-1 border-black bg-gray-200"
-          value={category}
-          onChange={handleCategoryChange}
-        >
-          <option value="All">All</option>
-          <option value="Food">Food</option>
-          <option value="Transport">Transport</option>
-          <option value="Utilities">Utilities</option>
-          <option value="Entertainment">Entertainment</option>
-          <option value="Health">Health</option>
-        </select>
+      <div className="flex w-full items-center justify-between p-4">
+        <div className="flex w-fit items-center justify-between p-3 gap-5 bg-gray-300 rounded-xl my-5">
+          <label htmlFor="Category">Category</label>
+          <select
+            name="categories"
+            className="border p-1 border-black bg-gray-200"
+            value={category}
+            onChange={handleCategoryChange}
+          >
+            <option value="All">All</option>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Utilities">Utilities</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Health">Health</option>
+          </select>
+        </div>
       </div>
 
       {/* Transactions */}

@@ -62,3 +62,22 @@ export const deleteTransaction = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const fetchDashboard = async (req, res) => {
+  try {
+    const totalExpenses = await Transaction.aggregate([
+      { $group: { _id: null, totalAmount: { $sum: "$amount" } } },
+    ]);
+
+    const recentTransactions = await Transaction.find()
+      .sort({ date: -1 })
+      .limit(5);
+
+    res.json({
+      totalExpenses: totalExpenses[0]?.totalAmount || 0,
+      recentTransactions,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

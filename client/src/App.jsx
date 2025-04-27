@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import AddTransaction from "./pages/AddTransaction";
 import MonthlyChart from "./pages/MonthlyChart";
 import Navbar from "./components/Navbar";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/add" element={<AddTransaction />} />
           <Route path="/monthly-chart" element={<MonthlyChart />} />
+          <Route path="/dashboard" element={<Dashboard/>} />
         </Routes>
       </div>
     </div>
