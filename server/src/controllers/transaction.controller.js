@@ -2,11 +2,12 @@ import { Transaction } from "../models/transaction.model.js";
 
 export const addTransaction = async (req, res) => {
   try {
-    const { amount, description, date } = req.body;
+    const { amount, description, date, category } = req.body;
     const newTransaction = new Transaction({
       amount,
       description,
-      date
+      date,
+      category,
     });
 
     await newTransaction.save();
@@ -34,11 +35,12 @@ export const getTransactions = async (req, res) => {
 export const updateTransaction = async (req, res) => {
   try {
     const { id } = req.params;
-    const { amount, description, date } = req.body;
+    const { amount, description, date, category } = req.body;
     const transaction = await Transaction.findByIdAndUpdate(id, {
       amount,
       description,
-      date
+      date,
+      category,
     });
     res.status(200).json({
       success: true,
