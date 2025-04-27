@@ -7,22 +7,29 @@ function AddTransaction() {
     amount: "",
     description: "",
     date: "",
+    category: "Food",
   });
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    if (formData.date === "") {
-      await axios.post(SERVER_URL + `/add`, {
+    try {
+      const payload = {
         amount: formData.amount,
         description: formData.description,
-        date: Date.now(),
+        date: formData.date === "" ? Date.now() : formData.date,
+        category: formData.category,
+      };
+
+      await axios.post(SERVER_URL + `/add`, payload);
+
+      setFormData({
+        amount: "",
+        description: "",
+        date: "",
+        category: "Food",
       });
-    } else {
-      await axios.post(SERVER_URL + `/add`, {
-        amount: formData.amount,
-        description: formData.description,
-        date: formData.date,
-      });
+    } catch (error) {
+      console.error("Error adding transaction:", error);
     }
   };
 
@@ -41,49 +48,85 @@ function AddTransaction() {
         onSubmit={handleAdd}
         className="flex flex-col gap-[3rem] border-2 border-yellow-500 p-10 w-1/2 bg-amber-200 rounded-xl"
       >
+        {/* Amount */}
         <div className="flex w-full items-center justify-between p-1">
           <label
-            htmlFor="Amount"
+            htmlFor="amount"
             className="text-blue-500 text-xl font-semibold"
           >
             Amount
           </label>
           <input
             type="number"
+            id="amount"
             name="amount"
             value={formData.amount}
             onChange={handleChange}
-            placeholder="enter amount"
+            placeholder="Enter amount"
             className="border-2 p-1 text-center border-gray-400"
+            required
           />
         </div>
+
+        {/* Description */}
         <div className="flex w-full items-center justify-between p-1">
           <label
-            htmlFor="Description"
+            htmlFor="description"
             className="text-blue-500 text-xl font-semibold"
           >
             Description
           </label>
           <textarea
+            id="description"
             name="description"
             value={formData.description}
             onChange={handleChange}
             className="border-2 p-1 text-start border-gray-400 overflow-auto"
-            placeholder="enter description"
+            placeholder="Enter description"
+            required
           />
         </div>
+
+        {/* Date */}
         <div className="flex w-full items-center justify-between p-1">
-          <label htmlFor="Date" className="text-blue-500 text-xl font-semibold">
+          <label htmlFor="date" className="text-blue-500 text-xl font-semibold">
             Date
           </label>
           <input
             type="date"
+            id="date"
             name="date"
             value={formData.date}
             onChange={handleChange}
             className="border-2 p-1 text-center border-gray-400 bg-white"
           />
         </div>
+
+        {/* Category */}
+        <div className="flex w-full items-center justify-between p-1">
+          <label
+            htmlFor="category"
+            className="text-blue-500 text-xl font-semibold"
+          >
+            Category
+          </label>
+          <select
+            id="category"
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            className="bg-gray-100 p-1 font-medium border border-black"
+            required
+          >
+            <option value="Food">Food</option>
+            <option value="Utilities">Utilities</option>
+            <option value="Health">Health</option>
+            <option value="Transport">Transport</option>
+            <option value="Entertainment">Entertainment</option>
+          </select>
+        </div>
+
+        {/* Submit Button */}
         <div className="bg-purple-500 w-[6rem] text-center font-bold text-white p-2 self-center text-xl rounded-xl hover:bg-purple-600">
           <button className="cursor-pointer" type="submit">
             Add

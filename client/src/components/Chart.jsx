@@ -12,7 +12,7 @@ import {
 import axios from "axios";
 import { SERVER_URL } from "../utils/constants";
 
-const Chart = () => {
+const Chart = ({ category }) => {
   const [transactions, setTransactions] = useState([]);
   const [data, setData] = useState([]);
 
@@ -20,8 +20,6 @@ const Chart = () => {
     const fetchTransactions = async () => {
       try {
         const response = await axios.get(SERVER_URL + "/");
-        // console.log(response);
-
         setTransactions(response.data.data);
       } catch (error) {
         console.error("Error fetching transactions:", error);
@@ -35,7 +33,11 @@ const Chart = () => {
     const processTransactions = () => {
       const monthlyExpenses = {};
 
-      transactions.forEach((transaction) => {
+      const filteredTransactions = category === "All"
+        ? transactions
+        : transactions.filter((t) => t.category === category);
+
+      filteredTransactions.forEach((transaction) => {
         const date = new Date(transaction.date);
         const month = `${date.getMonth() + 1}-${date.getFullYear()}`;
         const amount = transaction.amount;
@@ -58,20 +60,24 @@ const Chart = () => {
     if (transactions.length > 0) {
       processTransactions();
     }
-  }, [transactions]);
+  }, [transactions, category]); 
 
   return (
     <div className="chart-container flex items-center justify-center">
-      <ResponsiveContainer width={500} height={500}>
-        <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="amount" fill="#8884d8" />
-        </BarChart>
-      </ResponsiveContainer>
+      {data.length > 0 ? (
+        <ResponsiveContainer width={500} height={500}>
+          <BarChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="amount" fill="#8884d8" />
+          </BarChart>
+        </ResponsiveContainer>
+      ) : (
+        <p className="text-xl font-semibold text-gray-600">No data available for selected category.</p>
+      )}
     </div>
   );
 };
