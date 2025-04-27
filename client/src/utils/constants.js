@@ -1,0 +1,1 @@
+export const SERVER_URL="https://personal-finance-visualizer-a1y1.onrender.com/api"
